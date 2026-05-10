@@ -26,7 +26,3 @@ body {
   background: linear-gradient(135deg, #f5ebe0 0%, #e8d5c4 50%, #f0e6d8 100%);
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-}

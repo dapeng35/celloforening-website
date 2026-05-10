@@ -1,0 +1,99 @@
+.hero {
+  background: linear-gradient(135deg, #3d2817 0%, #5c4033 50%, #4a2f1f 100%);
+  color: white;
+  padding: 6rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '🎵 🎶 🎵 🎶 🎵';
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  width: 100%;
+  font-size: 2rem;
+  opacity: 0.15;
+  animation: float 10s ease-in-out infinite;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to top, rgba(61, 40, 23, 0.5), transparent);
+  pointer-events: none;
+}
+
+.heroContent {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.heroContent h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.heroContent p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.95;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.buttonPrimary {
+  background: linear-gradient(135deg, var(--accent-color), #c89666);
+  color: var(--mahogany);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+}
+
+.buttonPrimary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4);
+}
+
+.buttonSecondary {
+  background: rgba(212, 165, 116, 0.2);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: 2px solid var(--accent-color);
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.buttonSecondary:hover {
+  background: var(--accent-color);
+  color: var(--mahogany);
+}
+
+@media (max-width: 768px) {
+  .heroContent h1 {
+    font-size: 2.5rem;
+  }
+}

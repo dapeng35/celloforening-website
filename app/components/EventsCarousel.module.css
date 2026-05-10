@@ -1,0 +1,220 @@
+.section {
+  padding: 5rem 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.sectionSubtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.eventsCarousel {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.carouselContainer {
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.eventCard {
+  min-width: 100%;
+  background: var(--card-bg);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(78, 54, 41, 0.2);
+  border: 2px solid var(--border-color);
+}
+
+.eventImage {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.eventImage::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+}
+
+.eventImage1 {
+  background: linear-gradient(135deg, #8b5a3c 0%, #a0664f 100%);
+}
+
+.eventImage2 {
+  background: linear-gradient(135deg, #6b4423 0%, #8b6f47 100%);
+}
+
+.eventImage3 {
+  background: linear-gradient(135deg, #9b6b47 0%, #b8916d 100%);
+}
+
+.eventImage4 {
+  background: linear-gradient(135deg, #7a5230 0%, #96683f 100%);
+}
+
+.eventImage5 {
+  background: linear-gradient(135deg, #5d4534 0%, #7a5d47 100%);
+}
+
+.eventImage6 {
+  background: linear-gradient(135deg, #a67c52 0%, #c4a073 100%);
+}
+
+.eventContent {
+  padding: 2.5rem;
+  text-align: center;
+  background: linear-gradient(to bottom, #ffffff 0%, #faf8f5 100%);
+}
+
+.eventDate {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary-color), var(--wood-color));
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(78, 54, 41, 0.3);
+}
+
+.eventTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.eventDescription {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.eventLocation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.carouselControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.carouselBtn {
+  background: linear-gradient(135deg, var(--primary-color), var(--wood-color));
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(78, 54, 41, 0.4);
+}
+
+.carouselBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(78, 54, 41, 0.5);
+  background: linear-gradient(135deg, var(--wood-color), var(--accent-color));
+}
+
+.carouselBtn:active {
+  transform: scale(0.95);
+}
+
+.carouselDots {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.carouselDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border-color);
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  padding: 0;
+}
+
+.carouselDot.active {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  width: 30px;
+  border-radius: 6px;
+}
+
+.carouselDot:hover {
+  background: var(--wood-color);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 3rem 0;
+  }
+
+  .carouselBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .eventImage {
+    height: 200px;
+    font-size: 4rem;
+  }
+
+  .eventContent {
+    padding: 1.5rem;
+  }
+}

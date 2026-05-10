@@ -1,0 +1,24 @@
+.footer {
+  background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+  color: var(--accent-color);
+  padding: 3rem 0;
+  margin-top: 5rem;
+  border-top: 3px solid var(--mahogany);
+}
+
+.footerContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.footerContent p {
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.copyright {
+  margin-top: 1rem;
+  opacity: 0.6 !important;
+}

@@ -1,0 +1,145 @@
+.section {
+  padding: 5rem 0;
+  background: white;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.sectionSubtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.calendarWrapper {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 20px rgba(78, 54, 41, 0.15);
+  border: 2px solid var(--border-color);
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.calendarMonth {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.calendarNav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.calendarBtn {
+  background: var(--light-bg);
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.calendarBtn:hover {
+  background: linear-gradient(135deg, var(--primary-color), var(--wood-color));
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.calendarDayHeader {
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+.calendarDay {
+  background: var(--light-bg);
+  padding: 1rem;
+  min-height: 100px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.calendarDay:hover {
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 2px 8px rgba(78, 54, 41, 0.15);
+}
+
+.calendarDay.otherMonth {
+  opacity: 0.3;
+}
+
+.dayNumber {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--mahogany);
+}
+
+.calendarEvent {
+  background: linear-gradient(135deg, var(--primary-color), var(--wood-color));
+  color: white;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.calendarEvent:hover {
+  transform: scale(1.02);
+  background: linear-gradient(135deg, var(--wood-color), var(--accent-color));
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 3rem 0;
+  }
+
+  .calendarDay {
+    min-height: 80px;
+    padding: 0.5rem;
+  }
+
+  .calendarHeader {
+    justify-content: center;
+  }
+}

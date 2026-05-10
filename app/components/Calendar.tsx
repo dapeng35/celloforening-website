@@ -54,7 +54,7 @@ export default function Calendar() {
 
   const monthNames = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 
                       'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'];
-  const dayNames = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+  const dayNames = ['Ma', 'Ti', 'On', 'To', 'Fr', 'Lø', 'Sø'];
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -81,6 +81,21 @@ export default function Calendar() {
     );
   };
 
+  const weekdayShort = (day: number) => {
+    const d = new Date(year, month, day);
+    const dow = d.getDay();
+    const idx = dow === 0 ? 6 : dow - 1;
+    return dayNames[idx];
+  };
+
+  const agendaDays: { day: number; dayEvents: Event[] }[] = [];
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayEvents = getDayEvents(day);
+    if (dayEvents.length > 0) {
+      agendaDays.push({ day, dayEvents });
+    }
+  }
+
   const renderCalendarDays = () => {
     const days = [];
     const prevMonthDays = new Date(year, month, 0).getDate();
@@ -101,8 +116,15 @@ export default function Calendar() {
         <div key={`current-${day}`} className={styles.calendarDay}>
           <div className={styles.dayNumber}>{day}</div>
           {dayEvents.map(event => (
-            <div key={event.id} className={styles.calendarEvent}>
-              {event.icon} {event.title}
+            <div
+              key={event.id}
+              className={styles.calendarEvent}
+              title={`${event.title}`}
+            >
+              <span className={styles.calendarEventIcon} aria-hidden>
+                {event.icon}
+              </span>
+              <span className={styles.calendarEventLabel}>{event.title}</span>
             </div>
           ))}
         </div>
@@ -136,15 +158,63 @@ export default function Calendar() {
           <div className={styles.calendarHeader}>
             <h3 className={styles.calendarMonth}>{monthNames[month]} {year}</h3>
             <div className={styles.calendarNav}>
-              <button className={styles.calendarBtn} onClick={previousMonth}>← Forrige</button>
-              <button className={styles.calendarBtn} onClick={nextMonth}>Neste →</button>
+              <button
+                type="button"
+                className={styles.calendarBtn}
+                onClick={previousMonth}
+                aria-label="Forrige måned"
+              >
+                <span className={styles.calendarBtnWide}>← Forrige</span>
+                <span className={styles.calendarBtnNarrow} aria-hidden>‹</span>
+              </button>
+              <button
+                type="button"
+                className={styles.calendarBtn}
+                onClick={nextMonth}
+                aria-label="Neste måned"
+              >
+                <span className={styles.calendarBtnWide}>Neste →</span>
+                <span className={styles.calendarBtnNarrow} aria-hidden>›</span>
+              </button>
             </div>
           </div>
-          <div className={styles.calendarGrid}>
-            {dayNames.map(day => (
-              <div key={day} className={styles.calendarDayHeader}>{day}</div>
-            ))}
-            {renderCalendarDays()}
+          <div className={styles.calendarGridPanel}>
+            <div className={styles.calendarGrid}>
+              {dayNames.map(day => (
+                <div key={day} className={styles.calendarDayHeader}>{day}</div>
+              ))}
+              {renderCalendarDays()}
+            </div>
+          </div>
+          <div
+            className={styles.calendarListPanel}
+            role="region"
+            aria-label="Aktiviteter i valgt måned"
+          >
+            {agendaDays.length === 0 ? (
+              <p className={styles.agendaEmpty}>Ingen aktiviteter denne måneden.</p>
+            ) : (
+              <ul className={styles.agendaList}>
+                {agendaDays.map(({ day, dayEvents }) => (
+                  <li key={day} className={styles.agendaDay}>
+                    <div className={styles.agendaDateRow}>
+                      <span className={styles.agendaDayNum}>{day}.</span>
+                      <span className={styles.agendaWeekday}>{weekdayShort(day)}</span>
+                    </div>
+                    <ul className={styles.agendaEvents}>
+                      {dayEvents.map((event) => (
+                        <li key={event.id} className={styles.agendaEventRow}>
+                          <span className={styles.agendaEventIcon} aria-hidden>
+                            {event.icon}
+                          </span>
+                          <span className={styles.agendaEventTitle}>{event.title}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>

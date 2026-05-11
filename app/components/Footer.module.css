@@ -1,9 +1,10 @@
 .footer {
-  background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
-  color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--text-primary);
   padding: 3rem 0;
   margin-top: 5rem;
-  border-top: 3px solid var(--mahogany);
+  border-top: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
 }
 
 .footerContent {
@@ -14,11 +15,11 @@
 }
 
 .footerContent p {
-  opacity: 0.8;
+  opacity: 0.9;
   margin-bottom: 0.5rem;
 }
 
 .copyright {
   margin-top: 1rem;
-  opacity: 0.6 !important;
+  opacity: 0.65 !important;
 }

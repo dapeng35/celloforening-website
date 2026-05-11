@@ -1,139 +1,154 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './EventsCarousel.module.css';
 
-interface Event {
-  id: number;
-  title: string;
-  date: Date;
-  description: string;
-  location: string;
-  icon: string;
-}
+type Photo = { src: string; alt: string };
 
-const events: Event[] = [
-  {
-    id: 1,
-    title: "Musikalsk Lekedag",
-    date: new Date(2026, 4, 15),
-    description: "Vi spiller morsomme sanger og leker musikalske leker sammen!",
-    location: "Kulturhuset, Bergen",
-    icon: "🎪"
-  },
-  {
-    id: 2,
-    title: "Mini Konsert & Kaker",
-    date: new Date(2026, 4, 22),
-    description: "Spill for vennene dine og nyt deilige kaker etterpå!",
-    location: "Musikk-rommet",
-    icon: "🧁"
-  },
-  {
-    id: 3,
-    title: "Eventyr med Cello",
-    date: new Date(2026, 4, 28),
-    description: "Vi spiller musikk fra Disney og Harry Potter!",
-    location: "Skolen",
-    icon: "🦄"
-  },
-  {
-    id: 4,
-    title: "Sommer-konsert i Parken",
-    date: new Date(2026, 5, 5),
-    description: "Utendørs konsert med is og brus for alle!",
-    location: "Byparken",
-    icon: "🍦"
-  },
-  {
-    id: 5,
-    title: "Cello-workshop for Nybegynnere",
-    date: new Date(2026, 5, 12),
-    description: "Prøv cello for første gang - ingen erfaring nødvendig!",
-    location: "Musikkonservatoriet",
-    icon: "🎨"
-  },
-  {
-    id: 6,
-    title: "Film Musikk Spesial",
-    date: new Date(2026, 5, 19),
-    description: "Lær å spille musikk fra dine favoritt filmer!",
-    location: "Kulturhuset",
-    icon: "🎬"
-  }
+const FALLBACK_PHOTOS: Photo[] = [
+  { src: '/images/122026.jpg', alt: 'Bergen Celloforeningen' },
 ];
 
-function formatDate(date: Date): string {
-  const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-  return date.toLocaleDateString('no-NO', options);
+const TILE_COUNT = 4;
+
+function backgroundPositionForTile(tileIndex: number) {
+  const positions = ['22% 32%', '78% 28%', '28% 72%', '72% 68%'];
+  return positions[tileIndex % positions.length];
 }
 
 export default function EventsCarousel() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [photos, setPhotos] = useState<Photo[]>(FALLBACK_PHOTOS);
+  const photosRef = useRef(photos);
+  photosRef.current = photos;
+
+  const initialIndices = useMemo(
+    () => Array.from({ length: TILE_COUNT }, (_, i) => i % Math.max(FALLBACK_PHOTOS.length, 1)),
+    []
+  );
+  const [photoIndices, setPhotoIndices] = useState<number[]>(initialIndices);
+  const [flipped, setFlipped] = useState<boolean[]>(
+    () => Array.from({ length: TILE_COUNT }, () => false)
+  );
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % events.length);
-    }, 5000);
+    let cancelled = false;
 
-    return () => clearInterval(interval);
+    const load = async () => {
+      try {
+        const res = await fetch('/api/gallery-images', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = (await res.json()) as { photos?: Photo[] };
+        if (cancelled || !data.photos?.length) return;
+        setPhotos(data.photos);
+      } catch {
+        /* keep fallback */
+      }
+    };
+
+    void load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % events.length);
-  };
+  useEffect(() => {
+    const len = Math.max(photos.length, 1);
+    setPhotoIndices((prev) =>
+      prev.map((idx) => (Number.isFinite(idx) ? idx % len : 0))
+    );
+  }, [photos]);
 
-  const previousSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + events.length) % events.length);
-  };
+  const cancelledRef = useRef(false);
+  const timeoutRef = useRef<number | null>(null);
 
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
+  useEffect(() => {
+    cancelledRef.current = false;
+    const flipDurationMs = 650;
+
+    const scheduleNextFlip = () => {
+      if (cancelledRef.current) return;
+      const delayMs = 2000 + Math.floor(Math.random() * 3500);
+      timeoutRef.current = window.setTimeout(() => {
+        if (cancelledRef.current) return;
+        const tileIndex = Math.floor(Math.random() * TILE_COUNT);
+        const len = Math.max(photosRef.current.length, 1);
+
+        setFlipped((prev) => {
+          const next = [...prev];
+          next[tileIndex] = !next[tileIndex];
+          return next;
+        });
+
+        window.setTimeout(() => {
+          if (cancelledRef.current) return;
+          setPhotoIndices((prev) => {
+            const next = [...prev];
+            next[tileIndex] = (next[tileIndex] + 1) % len;
+            return next;
+          });
+        }, flipDurationMs / 2);
+
+        scheduleNextFlip();
+      }, delayMs);
+    };
+
+    scheduleNextFlip();
+
+    return () => {
+      cancelledRef.current = true;
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, []);
+
+  const len = Math.max(photos.length, 1);
 
   return (
     <section id="aktiviteter" className={styles.section}>
       <div className={styles.container}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Kommende Aktiviteter</h2>
-          <p className={styles.sectionSubtitle}>
-            Utforsk våre spennende aktiviteter og bli med på gøye musikalske opplevelser!
-          </p>
-        </div>
-        <div className={styles.eventsCarousel}>
-          <div className={styles.carouselContainer}>
-            <div 
-              className={styles.carouselTrack}
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {events.map((event, index) => (
-                <div key={event.id} className={styles.eventCard}>
-                  <div className={`${styles.eventImage} ${styles[`eventImage${index + 1}`]}`}>
-                    {event.icon}
+        <div className={styles.galleryGrid} aria-label="Bildegalleri">
+          {Array.from({ length: TILE_COUNT }, (_, tileIndex) => {
+            const photo = photos[photoIndices[tileIndex] % len] ?? photos[0];
+            const backPhoto = photos[(photoIndices[tileIndex] + 1) % len] ?? photos[0];
+            const position = backgroundPositionForTile(tileIndex);
+
+            return (
+              <div key={tileIndex} className={styles.tile}>
+                <div
+                  className={`${styles.tileInner} ${flipped[tileIndex] ? styles.isFlipped : ''}`}
+                >
+                  <div
+                    className={`${styles.face} ${styles.front}`}
+                    style={{
+                      backgroundImage: `url('${photo.src}')`,
+                      backgroundPosition: position,
+                    }}
+                    role="img"
+                    aria-label={photo.alt}
+                  >
+                    <span className={styles.posterLabel} aria-hidden>
+                      Poster
+                    </span>
                   </div>
-                  <div className={styles.eventContent}>
-                    <span className={styles.eventDate}>{formatDate(event.date)}</span>
-                    <h3 className={styles.eventTitle}>{event.title}</h3>
-                    <p className={styles.eventDescription}>{event.description}</p>
-                    <p className={styles.eventLocation}>📍 {event.location}</p>
+                  <div
+                    className={`${styles.face} ${styles.back}`}
+                    style={{
+                      backgroundImage: `url('${backPhoto.src}')`,
+                      backgroundPosition: position,
+                    }}
+                    role="img"
+                    aria-label={backPhoto.alt}
+                  >
+                    <span className={styles.posterLabel} aria-hidden>
+                      Poster
+                    </span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className={styles.carouselControls}>
-            <button className={styles.carouselBtn} onClick={previousSlide}>‹</button>
-            <div className={styles.carouselDots}>
-              {events.map((_, index) => (
-                <button
-                  key={index}
-                  className={`${styles.carouselDot} ${index === currentSlide ? styles.active : ''}`}
-                  onClick={() => goToSlide(index)}
-                />
-              ))}
-            </div>
-            <button className={styles.carouselBtn} onClick={nextSlide}>›</button>
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

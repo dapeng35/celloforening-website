@@ -1,22 +1,39 @@
 .hero {
   color: white;
-  padding: 1.5rem 2rem 4rem;
+  padding: 2.5rem 2rem 5rem;
   text-align: center;
   position: relative;
   overflow: hidden;
-  min-height: min(42vh, 24rem);
-  background-color: #3d2817;
+  min-height: min(52vh, 34rem);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: var(--dark-bg);
   background-image:
     linear-gradient(
       135deg,
-      rgba(45, 24, 16, 0.72) 0%,
-      rgba(61, 40, 23, 0.65) 45%,
-      rgba(74, 47, 31, 0.75) 100%
+      rgba(11, 26, 31, 0.62) 0%,
+      rgba(15, 36, 48, 0.52) 55%,
+      rgba(11, 26, 31, 0.68) 100%
     ),
     url('/images/122026.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.heroHello {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: 100%;
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.4);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
 }
 
 .heroButtons {

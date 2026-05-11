@@ -4,7 +4,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  min-height: min(52vh, 34rem);
+  height: auto;
   display: flex;
   align-items: flex-start;
   justify-content: center;
